@@ -56,6 +56,65 @@ Traditional Solidity patterns assume public state and transparent computation. B
 - build systems where correctness is verifiable without revealing inputs
 
 Each contract in this repository serves as a **concrete reference pattern**, not a production-ready system.
+## 🔍 How to Verify This On-Chain
+
+This repository is designed so that all claims can be verified directly by inspecting the Solidity source code and contract behavior, without relying on external services or trust assumptions.
+
+### Code-Level Verification
+
+Each contract demonstrates encrypted computation explicitly:
+
+- Encrypted values are declared using Zama’s encrypted Solidity types.
+- Arithmetic, comparisons, and state updates operate directly on encrypted data.
+- No plaintext versions of sensitive values are stored or emitted in events.
+
+A reviewer can confirm this by:
+- Opening each contract in the `contracts/` directory
+- Verifying that sensitive state variables never appear as standard Solidity types
+- Confirming that no functions expose decrypted values unless explicitly intended
+
+### Deterministic Execution
+
+Although values are encrypted, contract execution remains deterministic:
+- Encrypted inputs produce consistent encrypted outputs
+- State transitions follow standard EVM execution rules
+- No off-chain computation is required for correctness
+
+This preserves verifiability while preventing data leakage.
+
+### Controlled Revelation (Where Applicable)
+
+Some contracts include **explicit reveal mechanisms**:
+- Decryption or result exposure is gated by access control
+- Revelation is opt-in and intentional, never implicit
+- The reveal logic is clearly separated from core computation
+
+This allows reviewers to identify:
+- who can trigger a reveal
+- what information becomes public
+- when encrypted state remains private indefinitely
+
+### Local and Testnet Validation
+
+All contracts:
+- Compile successfully using Zama’s FHE Solidity tooling
+- Can be deployed to supported test environments
+- Can be interacted with via Remix or scripted calls to observe encrypted state changes
+
+Even without inspecting encrypted values, reviewers can verify:
+- transaction success
+- state updates
+- access control enforcement
+- absence of plaintext leakage
+
+### What This Proves
+
+Together, these properties demonstrate that:
+- privacy-preserving logic is executed on-chain
+- correctness is verifiable without revealing sensitive data
+- encrypted computation can replace standard Solidity primitives safely
+
+This repository serves as a **verifiable reference implementation** for building privacy-aware smart contracts using Fully Homomorphic Encryption.
 
 ---
 
