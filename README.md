@@ -150,6 +150,52 @@ This repository serves as a **verifiable reference implementation** for building
 - Built as a **learning + portfolio** project
 - No production deployment yet
 - Frontend, relayer, or integration layers may be explored later
+- ## 📐 Scope & Non-Goals
+
+This repository is intentionally scoped as a learning and reference project.
+
+### In Scope
+- Minimal, focused smart contracts demonstrating FHE concepts
+- Clear examples of encrypted state, computation, and access control
+- Readable Solidity code designed for inspection and understanding
+- Patterns that can be extended into production systems
+
+### Out of Scope
+- Production-ready deployments
+- Gas optimization
+- Audited implementations
+- Frontend, relayer, or key management infrastructure
+
+The goal is not to provide drop-in production contracts, but to offer a clear,
+verifiable foundation for developers exploring privacy-preserving smart contract
+design using FHE.
+## 🎯 Why This Is Grant-Worthy
+
+This project contributes to the ecosystem by providing **clear, verifiable reference patterns** for building privacy-preserving smart contracts using Fully Homomorphic Encryption (FHE).
+
+### Ecosystem Value
+
+- **Developer Enablement**  
+  The repository lowers the barrier to entry for developers exploring FHE by offering minimal, readable Solidity examples that focus on design patterns rather than abstract theory.
+
+- **Practical FHE Design Patterns**  
+  Each contract demonstrates a specific privacy challenge (state, voting, balances, governance) and shows how encrypted computation can replace standard Solidity primitives without sacrificing on-chain verifiability.
+
+- **Education and Documentation**  
+  By emphasizing inspectable code and explicit verification steps, this project serves as an educational resource for developers, auditors, and protocol designers evaluating FHE-based approaches.
+
+- **Early Ecosystem Support**  
+  As FHE-enabled blockchains and tooling mature, there is a strong need for small, well-scoped examples that demonstrate correct usage. This repository fills that gap by focusing on correctness, clarity, and composability.
+
+### Alignment with Grant Goals
+
+This work aligns with grant objectives that prioritize:
+- open-source developer tooling
+- privacy-preserving infrastructure
+- research and experimentation
+- long-term ecosystem growth over short-term applications
+
+Grant support would allow continued exploration of additional FHE patterns, improved documentation, and expansion into more realistic privacy-preserving use cases while maintaining the same emphasis on clarity and verifiability.
 
 ---
 
