@@ -1,211 +1,135 @@
-# Zama FHE Smart Contracts
 
-This repository contains a collection of small, focused smart contracts built
-while learning and experimenting with **Fully Homomorphic Encryption (FHE)**
-using Zama’s FHE Solidity framework.
+# Privacy-Preserving Smart Contract Patterns using Fully Homomorphic Encryption (FHE)
 
-The goal is to understand how encrypted computation changes smart contract
-design, state management, and access control on-chain.
-## 🔒 Problem & Motivation
-Most smart contracts today expose all state and computation publicly.
-While transparency is powerful, it becomes a limitation for applications involving:
--governance and voting
--balances and financial positions
--quotas, thresholds, or counters
--DAO decision-making with sensitive inputs
-In these systems, users are harmed by forced transparency, and developers are unable to express privacy-preserving logic directly on-chain without relying on off-chain trust assumptions.
-Fully Homomorphic Encryption (FHE) enables encrypted computation on-chain, allowing smart contracts to operate on private data without revealing plaintext values.
-This repository explores minimal, concrete smart contract patterns that demonstrate how FHE fundamentally changes:
-on-chain state management
-access control design
-result revelation logic
-developer ergonomics
-Each contract is intentionally small and focused, designed to make these patterns explicit, inspectable, and verifiable directly from the code.
-## 🧠 Design Approach
+This repository provides **minimal, verifiable reference implementations**
+demonstrating how **Fully Homomorphic Encryption (FHE)** enables private
+governance and financial logic directly on-chain.
 
-The design philosophy of this repository is to explore **small, explicit smart contract patterns** that demonstrate how Fully Homomorphic Encryption (FHE) changes on-chain design, without introducing unnecessary abstraction or off-chain dependencies.
-
-Rather than building a single complex application, the project is intentionally split into **minimal contracts**, each focused on one core idea. This makes the encrypted logic easier to reason about, audit, and verify directly from the source code.
-
-### Core Design Principles
-
-- **Encrypted-by-default state**  
-  Sensitive values (balances, votes, counters, thresholds) are stored and processed using Zama’s encrypted types, ensuring plaintext data is never exposed on-chain.
-
-- **Deterministic behavior over encrypted data**  
-  Contracts are designed so that encrypted state updates remain deterministic and verifiable, preserving blockchain execution guarantees.
-
-- **Explicit access control and reveal logic**  
-  Instead of implicit transparency, contracts define clear rules for:
-  - who may submit encrypted inputs
-  - who may trigger result revelation
-  - what information is ever decrypted
-
-- **Minimal trusted assumptions**  
-  All core logic executes on-chain. The contracts avoid reliance on off-chain servers, relayers, or trusted computation layers beyond the FHE execution model itself.
-
-- **Readable, inspectable code**  
-  Contracts are kept intentionally small and well-scoped so reviewers can understand *what is encrypted*, *when computation happens*, and *why results are revealed* by reading the Solidity code alone.
-
-### Why This Matters
-
-Traditional Solidity patterns assume public state and transparent computation. By replacing standard primitives with encrypted equivalents, this repository demonstrates how developers can:
-
-- express privacy-preserving logic directly on-chain
-- reduce leakage of sensitive economic or governance signals
-- build systems where correctness is verifiable without revealing inputs
-
-Each contract in this repository serves as a **concrete reference pattern**, not a production-ready system.
-## 🔍 How to Verify This On-Chain
-
-This repository is designed so that all claims can be verified directly by inspecting the Solidity source code and contract behavior, without relying on external services or trust assumptions.
-
-### Code-Level Verification
-
-Each contract demonstrates encrypted computation explicitly:
-
-- Encrypted values are declared using Zama’s encrypted Solidity types.
-- Arithmetic, comparisons, and state updates operate directly on encrypted data.
-- No plaintext versions of sensitive values are stored or emitted in events.
-
-A reviewer can confirm this by:
-- Opening each contract in the `contracts/` directory
-- Verifying that sensitive state variables never appear as standard Solidity types
-- Confirming that no functions expose decrypted values unless explicitly intended
-
-### Deterministic Execution
-
-Although values are encrypted, contract execution remains deterministic:
-- Encrypted inputs produce consistent encrypted outputs
-- State transitions follow standard EVM execution rules
-- No off-chain computation is required for correctness
-
-This preserves verifiability while preventing data leakage.
-
-### Controlled Revelation (Where Applicable)
-
-Some contracts include **explicit reveal mechanisms**:
-- Decryption or result exposure is gated by access control
-- Revelation is opt-in and intentional, never implicit
-- The reveal logic is clearly separated from core computation
-
-This allows reviewers to identify:
-- who can trigger a reveal
-- what information becomes public
-- when encrypted state remains private indefinitely
-
-### Local and Testnet Validation
-
-All contracts:
-- Compile successfully using Zama’s FHE Solidity tooling
-- Can be deployed to supported test environments
-- Can be interacted with via Remix or scripted calls to observe encrypted state changes
-
-Even without inspecting encrypted values, reviewers can verify:
-- transaction success
-- state updates
-- access control enforcement
-- absence of plaintext leakage
-
-### What This Proves
-
-Together, these properties demonstrate that:
-- privacy-preserving logic is executed on-chain
-- correctness is verifiable without revealing sensitive data
-- encrypted computation can replace standard Solidity primitives safely
-
-This repository serves as a **verifiable reference implementation** for building privacy-aware smart contracts using Fully Homomorphic Encryption.
+The focus of this work is **clarity, correctness, and inspectability**.
+The contracts are intentionally small and explicit, designed to show how
+encrypted computation fundamentally changes smart contract design, state
+management, and access control.
 
 ---
 
-## 📦 Contracts
+## 🔒 Problem
 
-- **ZamaEncryptedCounter.sol**  
-  Encrypted counter demonstrating deterministic state updates over encrypted values.
+Most smart contracts expose all state and computation publicly.
+While transparency is powerful, it becomes a limitation for applications
+involving:
 
-- **ZamaEncryptedVault.sol**  
-  A private vault using encrypted balances, showcasing secure value storage and access control.
+- governance and voting
+- balances and financial positions
+- quotas, thresholds, and counters
+- DAO decision-making with sensitive inputs
 
-- **ZamaEncryptedVoting.sol**  
-  Private voting logic with encrypted tallies and controlled result revelation.
-
-- **ZamaEncryptedDAO.sol**  
-  Simple DAO-style patterns built on top of encrypted voting primitives.
-
----
-
-## 🎯 Focus Areas
-
-- Replacing standard Solidity primitives with **Zama encrypted types**
-- Working with encrypted state and arithmetic
-- Designing secure reveal patterns
-- Understanding developer ergonomics when building with FHE
-- Writing clean, minimal contracts for learning and demonstration
+In these systems, forced transparency can leak economic signals, voting intent,
+or participation patterns, harming users and limiting what developers can
+safely express on-chain.
 
 ---
 
-## 🚧 Project Status
+## 🧠 Why Fully Homomorphic Encryption (FHE)
 
-- All contracts compile successfully
-- Built as a **learning + portfolio** project
-- No production deployment yet
-- Frontend, relayer, or integration layers may be explored later
-- ## 📐 Scope & Non-Goals
+Fully Homomorphic Encryption enables smart contracts to **compute on encrypted
+data** without revealing plaintext values.
 
-This repository is intentionally scoped as a learning and reference project.
+Unlike commit–reveal schemes or off-chain computation, FHE allows:
 
-### In Scope
-- Minimal, focused smart contracts demonstrating FHE concepts
-- Clear examples of encrypted state, computation, and access control
-- Readable Solidity code designed for inspection and understanding
-- Patterns that can be extended into production systems
+- encrypted state storage
+- encrypted arithmetic and comparisons
+- encrypted decision-making
+- deterministic on-chain execution
+- verifiable correctness without revealing inputs
 
-### Out of Scope
-- Production-ready deployments
-- Gas optimization
-- Audited implementations
-- Frontend, relayer, or key management infrastructure
-
-The goal is not to provide drop-in production contracts, but to offer a clear,
-verifiable foundation for developers exploring privacy-preserving smart contract
-design using FHE.
-## 🎯 Why This Is Grant-Worthy
-
-This project contributes to the ecosystem by providing **clear, verifiable reference patterns** for building privacy-preserving smart contracts using Fully Homomorphic Encryption (FHE).
-
-### Ecosystem Value
-
-- **Developer Enablement**  
-  The repository lowers the barrier to entry for developers exploring FHE by offering minimal, readable Solidity examples that focus on design patterns rather than abstract theory.
-
-- **Practical FHE Design Patterns**  
-  Each contract demonstrates a specific privacy challenge (state, voting, balances, governance) and shows how encrypted computation can replace standard Solidity primitives without sacrificing on-chain verifiability.
-
-- **Education and Documentation**  
-  By emphasizing inspectable code and explicit verification steps, this project serves as an educational resource for developers, auditors, and protocol designers evaluating FHE-based approaches.
-
-- **Early Ecosystem Support**  
-  As FHE-enabled blockchains and tooling mature, there is a strong need for small, well-scoped examples that demonstrate correct usage. This repository fills that gap by focusing on correctness, clarity, and composability.
-
-### Alignment with Grant Goals
-
-This work aligns with grant objectives that prioritize:
-- open-source developer tooling
-- privacy-preserving infrastructure
-- research and experimentation
-- long-term ecosystem growth over short-term applications
-
-Grant support would allow continued exploration of additional FHE patterns, improved documentation, and expansion into more realistic privacy-preserving use cases while maintaining the same emphasis on clarity and verifiability.
+This enables privacy-preserving logic to be expressed **directly on-chain**
+without introducing off-chain trust assumptions.
 
 ---
 
-## 📚 Notes
+## 🏛️ Primary Contribution: Encrypted Governance
 
-This repository is intentionally kept simple.
-Contracts are not optimized for production use and are meant to
-demonstrate concepts rather than provide audited implementations.
+The core contribution of this repository is the `EncryptedGovernance` contract,
+which demonstrates privacy-preserving on-chain governance using FHE.
+
+### What this contract demonstrates
+
+- Votes are submitted in encrypted form
+- Vote tallies are computed over encrypted data
+- Governance decisions can be evaluated while values remain encrypted
+- Individual votes and intermediate tallies are never revealed
+
+Only final results may be intentionally revealed, under explicit access control.
+
+### What is never revealed
+
+- individual votes
+- voting order
+- intermediate tallies
+- participation patterns
+
+All governance logic executes on-chain without off-chain relayers, servers,
+or trusted computation layers.
 
 ---
 
-Built by **GreenBasket Labs**  
-Learning Zama FHE, one contract at a time.
+## 🏦 Secondary Contribution: Encrypted Financial Constraints
+
+The `EncryptedVault` contract demonstrates how encrypted financial logic can be
+enforced directly on-chain.
+
+### What this contract demonstrates
+
+- balances are stored and updated in encrypted form
+- withdrawal conditions are evaluated using encrypted comparisons
+- financial rules are enforced without revealing balances or thresholds
+- no plaintext balance information is stored or emitted
+
+This pattern shows how sensitive financial constraints can be enforced on-chain
+without leaking economic information.
+
+---
+
+## 🔍 Verification & Inspectability
+
+All claims made by this repository can be verified directly by inspecting the
+Solidity source code.
+
+- Sensitive values are declared using encrypted types
+- Arithmetic and comparisons operate on encrypted data
+- No plaintext versions of sensitive values are stored or emitted unintentionally
+- Revelation logic is explicit and opt-in
+
+Despite operating on encrypted data, contract execution remains deterministic
+and verifiable under the EVM execution model.
+
+---
+
+## 📐 Scope & Non-Goals
+
+This repository is intentionally scoped as a **reference and educational
+resource**, not a production-ready system.
+
+### In scope
+- minimal FHE smart contract patterns
+- encrypted state management
+- encrypted decision-making
+- governance and financial privacy
+- developer education and reference designs
+
+### Out of scope
+- production deployments
+- gas optimization
+- audited implementations
+- frontends, relayers, or key management infrastructure
+
+---
+
+## 🎯 Goal
+
+The goal of this repository is to lower the barrier for developers exploring
+privacy-preserving smart contract design using Fully Homomorphic Encryption.
+
+By providing small, readable, and verifiable examples, this project aims to help
+developers, auditors, and protocol designers understand how FHE can replace
+standard Solidity primitives safely and correctly.
