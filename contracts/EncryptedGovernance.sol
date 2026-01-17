@@ -86,9 +86,13 @@ contract EncryptedGovernance {
 
         proposal.active = false;
 
-        // NOTE:
-        // Encrypted decision logic (e.g. yesVotes > noVotes)
-        // can be performed here before decryption if needed.
+        // Encrypted decision logic
+// This comparison happens while values are still encrypted
+ebool passed = TFHE.gt(proposal.yesVotes, proposal.noVotes);
+
+// (Optional) enforce governance rule before reveal
+// Example: require proposal to pass before results are revealed
+// TFHE.req(passed);
 
         yes = TFHE.decrypt(proposal.yesVotes);
         no = TFHE.decrypt(proposal.noVotes);
