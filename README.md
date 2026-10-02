@@ -1,135 +1,72 @@
+# Privacy-Preserving Smart Contract Patterns with FHE
 
-# Privacy-Preserving Smart Contract Patterns using Fully Homomorphic Encryption (FHE)
+**Minimal Solidity reference implementations for encrypted governance and financial constraints.**
 
-This repository provides **minimal, verifiable reference implementations**
-demonstrating how **Fully Homomorphic Encryption (FHE)** enables private
-governance and financial logic directly on-chain.
+This repository explores how Fully Homomorphic Encryption (FHE) can change the way sensitive state and decisions are represented in smart contracts.
 
-The focus of this work is **clarity, correctness, and inspectability**.
-The contracts are intentionally small and explicit, designed to show how
-encrypted computation fundamentally changes smart contract design, state
-management, and access control.
+> **Status: reference / educational implementation — not audited or production-ready.**
 
----
+## Why FHE?
 
-## 🔒 Problem
+Traditional smart contracts expose state and computation publicly. That is useful for transparency, but problematic when applications need to protect information such as:
 
-Most smart contracts expose all state and computation publicly.
-While transparency is powerful, it becomes a limitation for applications
-involving:
-
-- governance and voting
+- voting choices
 - balances and financial positions
-- quotas, thresholds, and counters
-- DAO decision-making with sensitive inputs
+- thresholds and quotas
+- sensitive governance inputs
 
-In these systems, forced transparency can leak economic signals, voting intent,
-or participation patterns, harming users and limiting what developers can
-safely express on-chain.
+FHE enables computation over encrypted values without requiring the plaintext to be exposed to the contract logic.
 
----
+## Included Patterns
 
-## 🧠 Why Fully Homomorphic Encryption (FHE)
+### Encrypted Governance
 
-Fully Homomorphic Encryption enables smart contracts to **compute on encrypted
-data** without revealing plaintext values.
+The `EncryptedGovernance` pattern demonstrates:
+- encrypted vote submission
+- encrypted tally computation
+- encrypted decision logic
+- explicit result revelation under access control
 
-Unlike commit–reveal schemes or off-chain computation, FHE allows:
+### Encrypted Vault
 
-- encrypted state storage
-- encrypted arithmetic and comparisons
-- encrypted decision-making
-- deterministic on-chain execution
-- verifiable correctness without revealing inputs
+The `EncryptedVault` pattern explores:
+- encrypted balances
+- encrypted comparisons
+- withdrawal constraints
+- keeping sensitive financial state from being exposed as plaintext
 
-This enables privacy-preserving logic to be expressed **directly on-chain**
-without introducing off-chain trust assumptions.
+## Design Goals
 
----
+- Keep the contracts small and inspectable
+- Make encrypted state transitions explicit
+- Separate encrypted computation from intentional revelation
+- Demonstrate patterns that developers and auditors can study
 
-## 🏛️ Primary Contribution: Encrypted Governance
+## Verification Mindset
 
-The core contribution of this repository is the `EncryptedGovernance` contract,
-which demonstrates privacy-preserving on-chain governance using FHE.
+The repository is designed for source-level inspection. Claims should be checked against the actual Solidity implementation rather than treated as production security guarantees.
 
-### What this contract demonstrates
-
-- Votes are submitted in encrypted form
-- Vote tallies are computed over encrypted data
-- Governance decisions can be evaluated while values remain encrypted
-- Individual votes and intermediate tallies are never revealed
-
-Only final results may be intentionally revealed, under explicit access control.
-
-### What is never revealed
-
-- individual votes
-- voting order
-- intermediate tallies
-- participation patterns
-
-All governance logic executes on-chain without off-chain relayers, servers,
-or trusted computation layers.
-
----
-
-## 🏦 Secondary Contribution: Encrypted Financial Constraints
-
-The `EncryptedVault` contract demonstrates how encrypted financial logic can be
-enforced directly on-chain.
-
-### What this contract demonstrates
-
-- balances are stored and updated in encrypted form
-- withdrawal conditions are evaluated using encrypted comparisons
-- financial rules are enforced without revealing balances or thresholds
-- no plaintext balance information is stored or emitted
-
-This pattern shows how sensitive financial constraints can be enforced on-chain
-without leaking economic information.
-
----
-
-## 🔍 Verification & Inspectability
-
-All claims made by this repository can be verified directly by inspecting the
-Solidity source code.
-
-- Sensitive values are declared using encrypted types
-- Arithmetic and comparisons operate on encrypted data
-- No plaintext versions of sensitive values are stored or emitted unintentionally
-- Revelation logic is explicit and opt-in
-
-Despite operating on encrypted data, contract execution remains deterministic
-and verifiable under the EVM execution model.
-
----
-
-## 📐 Scope & Non-Goals
-
-This repository is intentionally scoped as a **reference and educational
-resource**, not a production-ready system.
+## Scope
 
 ### In scope
-- minimal FHE smart contract patterns
-- encrypted state management
+- FHE smart-contract patterns
+- encrypted state
 - encrypted decision-making
-- governance and financial privacy
-- developer education and reference designs
+- privacy-preserving governance
+- privacy-preserving financial constraints
+- developer education
 
 ### Out of scope
-- production deployments
+- production deployment
+- audited security guarantees
 - gas optimization
-- audited implementations
-- frontends, relayers, or key management infrastructure
+- complete frontends
+- production key-management infrastructure
 
----
+## Security Disclaimer
 
-## 🎯 Goal
+These examples are **not audited** and should not be used to custody real assets or secure production systems without additional engineering, testing, and independent security review.
 
-The goal of this repository is to lower the barrier for developers exploring
-privacy-preserving smart contract design using Fully Homomorphic Encryption.
+## Goal
 
-By providing small, readable, and verifiable examples, this project aims to help
-developers, auditors, and protocol designers understand how FHE can replace
-standard Solidity primitives safely and correctly.
+Provide small, readable examples that help Solidity developers reason about privacy-preserving computation and encrypted state.
